@@ -27,3 +27,13 @@ The app contains a test API call. Flask will by default be hosted on `http://loc
 ```bash
 curl http://localhost:5000/time
 ```
+
+## Database 
+The app contains some mock data. You need to initalise the database to create the table and then you can access the API using the data at `api/all`. This returns all the mock data
+
+```bash
+flask init-db
+
+curl http://localhost:5000/api/all
+
+```

@@ -32,7 +32,10 @@ def create_app(test_config=None):
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         return {'time': dt_string}
 
+    
     from . import db
     db.init_app(app)
 
+    from . import api
+    app.register_blueprint(api.bp)
     return app
