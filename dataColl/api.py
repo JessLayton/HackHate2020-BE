@@ -1,17 +1,14 @@
-from flask import Blueprint, g, request 
-from dataColl.db import get_db
 import json
+
+from dataColl.db import query_db
+from flask import Blueprint, g, request
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 @bp.route('/all', methods=['GET'])
 def all():
     if request.method == 'GET':
-        db = get_db()
-
-        all_data_sql = db.execute(
-        'SELECT * FROM MOCK_DATA'
-        ).fetchall()
+        all_data_sql = query_db('SELECT * FROM MOCK_DATA')
 
         json_data = json.dumps([dict(ix) for ix in all_data_sql])
 
