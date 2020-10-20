@@ -57,7 +57,7 @@ def init_db():
     Initialise the database by running the SQL contained in `schema.sql`.
     """
     with current_app.open_resource('schema.sql') as f:
-        query_db(f.read().decode('utf8'))
+        db.executescript(f.read().decode('utf8'))
 
 
 @click.command('init-db')
