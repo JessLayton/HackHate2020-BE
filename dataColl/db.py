@@ -1,3 +1,4 @@
+"""db.py - Database helper functions."""
 import sqlite3
 
 import click
@@ -6,6 +7,10 @@ from flask.cli import with_appcontext
 
 
 def get_db():
+    """
+    Return the database connection from the global object `g`. If no such
+    connection exists, create it and store it in `g`.
+    """
     if 'db' not in g:
         g.db = sqlite3.connect(
             current_app.config['DATABASE'],
@@ -17,6 +22,9 @@ def get_db():
 
 
 def close_db(e=None):
+    """
+    Close the database connection stored in `g`, if one exists.
+    """
     db = g.pop('db', None)
 
     if db is not None:
@@ -24,11 +32,20 @@ def close_db(e=None):
 
 
 def init_app(app):
+    """
+    Register database-related functions with the given app.
+    """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
 
 def query_db(query, args=(), one=False):
+    """
+    Return the results of `query` with the arguments `args`.
+
+    If `one` is False, return a generator which yields each row returned
+    by the query in turn. If `one` is True, return only the first row.
+    """
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
     cur.close()
