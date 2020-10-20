@@ -22,20 +22,6 @@ def close_db(e=None):
     if db is not None:
         db.close()
 
-def init_db():
-    db = get_db()
-
-    with current_app.open_resource('MOCK_DATA.sql') as f:
-        db.executescript(f.read().decode('utf8'))
-
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
-
 
 def init_app(app):
     app.teardown_appcontext(close_db)
@@ -47,3 +33,19 @@ def query_db(query, args=(), one=False):
     rv = cur.fetchall()
     cur.close()
     return (rv[0] if rv else None) if one else rv
+
+
+def init_db():
+    """
+    Initialise the database by running the SQL contained in `schema.sql`.
+    """
+    with current_app.open_resource('schema.sql') as f:
+        query_db(f.read().decode('utf8'))
+
+
+@click.command('init-db')
+@with_appcontext
+def init_db_command():
+    """Clear the existing data and create new tables."""
+    init_db()
+    click.echo('Initialized the database.')
