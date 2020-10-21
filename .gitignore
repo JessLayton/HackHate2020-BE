@@ -13,4 +13,3 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-test_db.py

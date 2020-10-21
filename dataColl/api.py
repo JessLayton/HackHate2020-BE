@@ -1,15 +1,24 @@
-import json
-
+"""api.py - Define API endpoints"""
+from flask import Blueprint, jsonify
 from dataColl.db import query_db
-from flask import Blueprint, g, request
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
-@bp.route('/all', methods=['GET'])
-def all():
-    if request.method == 'GET':
-        all_data_sql = query_db('SELECT * FROM MOCK_DATA')
+@bp.route('/getDDPOs', methods=['GET'])
+def getDDPOs():
+    """
+    Return a JSON list of all registered DDPOs to the client.
 
-        json_data = json.dumps([dict(ix) for ix in all_data_sql])
-
-        return json_data
+    Example output
+    --------------
+    ```
+    [
+        {
+            "id": 1,
+            "name": "Foobar DDPO"
+        }
+    ]
+    ```
+    """
+    all_ddpos = query_db("SELECT * FROM Organisation;")
+    return jsonify([{"id": row["Id"], "name": row["Name"]} for row in all_ddpos])
