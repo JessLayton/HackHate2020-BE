@@ -3,7 +3,6 @@ from flask import Flask
 from datetime import datetime
 
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -24,14 +23,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # a test route 
-    @app.route('/time')
-    def get_current_time():
-        now = datetime.now()
-        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-        return {'time': dt_string}
-
     
     from . import db
     db.init_app(app)
