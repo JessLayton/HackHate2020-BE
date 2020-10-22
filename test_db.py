@@ -1,5 +1,4 @@
 import sqlite3
-from flask import jsonify
 
 db_file = "instance/dataColl.sqlite"
 
@@ -16,3 +15,9 @@ test = []
 for i in weights_sql:
     test.append(tuple(i))
 
+
+## form data
+
+form = db.execute(
+    'SELECT * FROM form_data'
+)
