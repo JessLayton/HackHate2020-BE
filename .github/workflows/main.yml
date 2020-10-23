@@ -1,10 +1,7 @@
-name: dataColl
-
+name: python Package
 on: [push]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
