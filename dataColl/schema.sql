@@ -10,7 +10,7 @@ CREATE TABLE Organisation (
 );
 
 CREATE TABLE form_data (
-    Id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     start_date date,
     end_date date,
     name_ddpo TEXT,

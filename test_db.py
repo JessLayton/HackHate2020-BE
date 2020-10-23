@@ -18,6 +18,13 @@ for i in weights_sql:
 
 ## form data
 
+db.execute('INSERT into form_data (start_date, end_date, name_ddpo, borough_covered) VALUES ("2020-01-01", "2020-01-02", "foo", "bar" )')
+db.commit()
+
 form = db.execute(
     'SELECT * FROM form_data'
 )
+
+for i in form:
+    print(list(i))
+
