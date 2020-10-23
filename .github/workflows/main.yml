@@ -1,4 +1,4 @@
-name: Python package
+name: dataColl
 
 on: [push]
 
