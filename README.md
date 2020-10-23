@@ -1,4 +1,4 @@
-https://github.com/JessLayton/HackHate2020-BE/workflows/flask_test/badge.svg
+![](https://github.com/JessLayton/HackHate2020-BE/workflows/flask_test/badge.svg)
 
 # DDPO Data Hub Backend
 
