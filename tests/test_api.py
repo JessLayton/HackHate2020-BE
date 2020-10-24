@@ -1,7 +1,9 @@
 from dataColl.db import get_db
 """test_api.py - Test API endpoints"""
 
-
+############
+# getDDPOs #
+############
 def test_getDDPOs_success(client):
     """Test successful use of getDDPOs endpoint."""
     response = client.get('/api/getDDPOs')
@@ -27,6 +29,9 @@ def test_getDDPOs_error(client, app):
     assert 'message' in json
 
 
+###########
+# addDDPO #
+###########
 def test_addDDPO_success(client):
     """Test successful use of addDDPO endpoint."""
     body = {
@@ -71,8 +76,21 @@ def test_addDDPO_error(client, app):
     assert 'message' in json
 
 
+def test_addDDPO_fail_missing_body(client):
+    """Test missing body from request to addDDPO."""
+    response = client.post('/api/addDDPO')
+    json = response.get_json()
+    assert json['status'] == 'fail'
+    assert json["data"] == {
+        "name": "name is required",
+    }
+
+
+##############
+# updateDDPO #
+##############
 def test_updateDDPO_success(client):
-    """Test successful use of updateDDPOs endpoint."""
+    """Test successful use of updateDDPO endpoint."""
     body = {
         "id": 2,
         "name": "Bish DDPO"
@@ -87,7 +105,7 @@ def test_updateDDPO_success(client):
 
 
 def test_updateDDPO_fail_wrong_id_type(client):
-    """Test passing non-integers as id attributes to addDDPO."""
+    """Test passing non-integers as id attributes to updateDDPO."""
     body = {
         "id": "2",
         "name": "Bish DDPO"
@@ -202,6 +220,84 @@ def test_updateDDPO_error(client, app):
         "name": "Bish DDPO"
     }
     response = client.put('/api/updateDDPO', json=body)
+    json = response.get_json()
+    assert json['status'] == 'error'
+    assert len(json.keys()) == 2
+    assert 'message' in json
+
+
+##############
+# deleteDDPO #
+##############
+def test_deleteDDPO_success(client):
+    """Test successful use of deleteDDPOs endpoint."""
+    body = {
+        "id": 1,
+    }
+    response = client.delete('/api/deleteDDPO', json=body)
+    json = response.get_json()
+    assert json['status'] == 'success'
+    assert json["data"] is None
+
+
+def test_deleteDDPO_fail_wrong_id_type(client):
+    """Test passing non-integers as id attributes to addDDPO."""
+    body = {
+        "id": "2"
+    }
+    response = client.delete('/api/deleteDDPO', json=body)
+    json = response.get_json()
+    assert json['status'] == 'fail'
+    assert json["data"] == {
+        "id": "id must be an integer"
+    }
+
+
+def test_deleteDDPO_fail_nonexistent_ddpo(client):
+    """Test passing id of nonexistent DDPO to deleteDDPO."""
+    body = {
+        "id": 99
+    }
+    response = client.delete('/api/deleteDDPO', json=body)
+    json = response.get_json()
+    assert json['status'] == 'fail'
+    assert json["data"] == {
+        "id": "id does not match an existing DDPO",
+    }
+
+
+def test_deleteDDPO_fail_missing_body(client):
+    """Test missing body from request to deleteDDPO."""
+    response = client.delete('/api/deleteDDPO')
+    json = response.get_json()
+    assert json['status'] == 'fail'
+    assert json["data"] == {
+        "id": "id is required"
+    }
+
+
+def test_deleteDDPO_fail_missing_id(client):
+    """Test missing id from request to deleteDDPO."""
+    response = client.delete('/api/deleteDDPO', json={})
+    json = response.get_json()
+    assert json['status'] == 'fail'
+    assert json["data"] == {
+        "id": "id is required"
+    }
+
+
+def test_deleteDDPO_error(client, app):
+    """Test deleteDDPO endpoint error handling."""
+    # Drop table to induce error
+    with app.test_request_context():
+        db = get_db()
+        db.execute('DROP TABLE Organisation;')
+
+    body = {
+        "id": 2,
+        "name": "Bish DDPO"
+    }
+    response = client.delete('/api/deleteDDPO', json=body)
     json = response.get_json()
     assert json['status'] == 'error'
     assert len(json.keys()) == 2

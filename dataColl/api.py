@@ -163,3 +163,61 @@ def updateDDPO():
         })
     except sqlite3.Error as e:
         return jsonify({"status": "error", "message": e.args[0]})
+
+
+@bp.route('/deleteDDPO', methods=['DELETE'])
+def deleteDDPO():
+    """
+    Delete an existing DDPO.
+
+    Example input
+    --------------
+    ```
+    {
+        "id": 1,
+    }
+    ```
+
+    Example output
+    --------------
+    ```
+    {
+        "status": "success",
+        "data": null
+    }
+    ```
+    """
+    try:
+        json = request.get_json()
+        # Check if required fields exist
+        if json is None or "id" not in json:
+            return jsonify({"status": "fail", "data": {"id": "id is required"}})
+
+
+        # Check for data type errors
+        if not isinstance(json['id'], int):
+            return jsonify({
+                "status": "fail",
+                "data": {
+                    "id": "id must be an integer"
+                }
+            })
+
+        # Check if the DDPO to be updated actually exists
+        query = "SELECT Id, Name FROM Organisation WHERE Id = ?"
+        ddpo = query_db(query, (json["id"],), one=True)
+        if ddpo is None:
+            return jsonify({
+                "status": "fail",
+                "data": {"id": "id does not match an existing DDPO"}
+            })
+
+        # Do the delete - does nothing if DDPO does not exist
+        query_db("DELETE FROM Organisation WHERE Id = ?", (json["id"],))
+
+        return jsonify({
+            "status": "success",
+            "data": None
+        })
+    except sqlite3.Error as e:
+        return jsonify({"status": "error", "message": e.args[0]})
