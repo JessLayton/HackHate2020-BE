@@ -1,5 +1,5 @@
-from dataColl.db import get_db
 """test_api.py - Test API endpoints"""
+from dataColl.db import get_db
 
 ############
 # getDDPOs #
