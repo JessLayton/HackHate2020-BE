@@ -1,4 +1,4 @@
-name: python Package
+name: flask_test
 on: [push]
 jobs:
   build:
