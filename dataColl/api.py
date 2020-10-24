@@ -1,6 +1,6 @@
 """api.py - Define API endpoints"""
 from flask import Blueprint, jsonify, request
-from dataColl.db import query_db, get_db
+from dataColl.db import query_db, get_db, process_form, process_question
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -27,13 +27,9 @@ def getDDPOs():
 def form():
     form_data = request.get_json(force=True)
 
-    start_date = form_data['time_period']['start']
-    end_date = form_data['time_period']['end']
-    name_ddpo = form_data['name_ddpo']
-    borough_covered_str = ', '.join([str(elem) for elem in form_data['borough_covered']])
+    process_form(form_data)
 
-    db = get_db()
-    db.execute('INSERT into form_data (start_date, end_date, name_ddpo, borough_covered) VALUES (?, ?, ?, ?)',
-    (start_date, end_date, name_ddpo, borough_covered_str))
-    db.commit()
-    return("success")
+    for question in form_data.keys():
+        process_question(form_data=form_data, question=question)
+
+    return("done")
