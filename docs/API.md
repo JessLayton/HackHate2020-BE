@@ -14,7 +14,9 @@ DDPOs have two attributes:
 Retrieves all registered DDPOs.
 
 **Allowed methods:** *GET*
+
 **Request JSON example:** N/A
+
 **Response JSON example:**
 ``` json
 {
@@ -31,6 +33,7 @@ Retrieves all registered DDPOs.
     ]
 }
 ```
+
 **Notes:** *status* will never be `"fail"`.
 
 
@@ -38,12 +41,14 @@ Retrieves all registered DDPOs.
 Register a new DDPO.
 
 **Allowed methods:** *POST*
+
 **Request JSON example:**
 ``` json
 {
     "name": "Baz DDPO"
 }
 ```
+
 **Response JSON example:**
 ``` json
 {
@@ -54,6 +59,7 @@ Register a new DDPO.
     }
 }
 ```
+
 **Notes:** status will be `"fail"` if *name* is absent or of the wrong type.
 
 
@@ -61,6 +67,7 @@ Register a new DDPO.
 Update an existing DDPO.
 
 **Allowed methods:** *PUT*
+
 **Request JSON example:**
 ``` json
 {   
@@ -68,6 +75,7 @@ Update an existing DDPO.
     "name": "Bosh DDPO"
 }
 ```
+
 **Response JSON example:**
 ``` json
 {
@@ -78,6 +86,7 @@ Update an existing DDPO.
     }
 }
 ```
+
 **Notes:** status will be `"fail"` if *name* or *id* are absent or of the wrong type,
 or if no existing DDPO has the given *id*.
 
@@ -86,12 +95,14 @@ or if no existing DDPO has the given *id*.
 Delete an existing DDPO.
 
 **Allowed methods:** *DELETE*
+
 **Request JSON example:**
 ``` json
 {   
     "id": 3
 }
 ```
+
 **Response JSON example:**
 ``` json
 {
@@ -99,5 +110,6 @@ Delete an existing DDPO.
     "data": null
 }
 ```
+
 **Notes:** status will be `"fail"` if *id* is absent or of the wrong type,
 or if no existing DDPO has the given *id*.
