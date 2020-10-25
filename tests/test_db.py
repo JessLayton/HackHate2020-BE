@@ -1,8 +1,8 @@
 """test_db.py - Test dataColl.db"""
 import sqlite3
-
+import json
 import pytest
-from dataColl.db import get_db, query_db
+from dataColl.db import get_db, query_db, process_question
 
 
 def test_get_close_db(app):
@@ -40,3 +40,12 @@ def test_query_db(app):
         names = [row['Name'] for row in args_result]
         assert "Foo DDPO" in names
         assert "Bar DDPO" in names
+
+def test_process_question(app):
+    with app.app_context():
+        with open("example.json") as f:
+            form_data = json.load(f)
+        process_question(form_data=form_data, question="ethnicity")
+        h = query_db('SELECT * FROM ethnicity', one=True)
+        assert list(h)[0] == 13247
+        assert list(h)[5] == 934

@@ -19,7 +19,7 @@ def get_db2():
 db = get_db2()
 
 form = db.execute(
-    'SELECT * FROM form_data'
+    'SELECT * FROM ethnicity'
 )
 
 for i in form:
@@ -73,4 +73,3 @@ def process_question(form_data: dict, question: str) -> None:
 
 for question in form_data.keys():
     process_question(form_data=form_data, question=question)
-

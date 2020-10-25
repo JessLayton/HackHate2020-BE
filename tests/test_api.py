@@ -12,3 +12,6 @@ def test_getDDPOs(client):
         {'id': 2, 'name': 'Bar DDPO'},
         {'id': 3, 'name': 'Baz DDPO'}
     ]
+
+def test_form(client):
+    pass

@@ -1,8 +1,0 @@
-{
-    "time_period": {
-        "start": "datestring", 
-        "end": "datestring",
-    },
-    "name_ddpo" : int,
-    "borough_covered": ["string1", "string2"]
-}
