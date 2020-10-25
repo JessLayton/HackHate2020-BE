@@ -7,8 +7,8 @@ with open("example.json") as f:
     form_data = json.load(f)
 
 ## Test POST API JSON
-#import requests
-#requests.post('http://localhost:5000/api/form', json=form_data)
+import requests
+k = requests.post('http://localhost:5000/api/form', json=form_data)
 
 def get_db2():
     db_file = "instance/dataColl.sqlite"
@@ -42,22 +42,27 @@ def process_form(form_data: dict):
 
     sql = f"INSERT into form_data ({column_str}) VALUES ({question_marks})"
 
-    db = get_db2()
-    db.execute(sql, ([top_level_fields[key] for key in fields]))
-    db.commit()
+    try:
+        db = get_db2()
+        db.execute(sql, ([top_level_fields[key] for key in fields]))
+        db.commit()
+        return None
+    except Exception as e:
+        error = str(e.__class__) + " : " + repr(e)
+        return error
         
 
 process_form(form_data)
 
 
-def process_question(form_data: dict, question: str) -> None:
+def process_question(form_data: dict, question: str) -> tuple:
 
-    if question == "time_period":
-        return None
+    #if question == "time_period":
+    #    return None
 
     if not isinstance(form_data[question], dict):
         return None
-
+    
     keys = form_data[question].keys()
     question_marks = ", ".join("?" * len(keys))
     keys_str = ", ".join([str(elem) for elem in form_data[question].keys()])
@@ -68,8 +73,36 @@ def process_question(form_data: dict, question: str) -> None:
         db = get_db2()
         db.execute(sql, ([form_data[question][key] for key in keys]))
         db.commit()
+        return None
     except OperationalError as e:
-        print(e.args)
+        error = str(e.__class__) + " : " + repr(e)
+        return error
+
+
+
+errors = {}
+
+form_error = process_form(form_data)
+errors["form_error"] = form_error
 
 for question in form_data.keys():
-    process_question(form_data=form_data, question=question)
+    error_response = process_question(form_data=form_data, question=question)
+    errors[question] = error_response
+
+
+error_bool = []
+for key in errors.keys():
+    error_bool.append(errors[key] is None)
+
+if sum(error_bool) == len(error_bool):
+    status = "success"
+    message = "The recieved json was successfully stored"
+else:
+    status = "error"
+    message = "Their was an error in storing the data. See data to find out more"
+
+
+api_response =  {"status": status, "message": message, "data": errors}
+
+
+json.dumps(api_response)

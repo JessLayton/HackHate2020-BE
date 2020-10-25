@@ -2,7 +2,7 @@
 import sqlite3
 import json
 import pytest
-from dataColl.db import get_db, query_db, process_question
+from dataColl.db import get_db, query_db, process_question, process_form
 
 
 def test_get_close_db(app):
@@ -49,3 +49,9 @@ def test_process_question(app):
         h = query_db('SELECT * FROM ethnicity', one=True)
         assert list(h)[0] == 13247
         assert list(h)[5] == 934
+
+def test_process_form(app):
+    with app.app_context():
+        with open("example.json") as f:
+            form_data = json.load(f)
+        process_form(form_data)

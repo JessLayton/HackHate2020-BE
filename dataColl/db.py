@@ -52,7 +52,8 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
-def process_form(form_data: dict) -> None:
+
+def process_form(form_data: dict) -> tuple:
     
     top_level_fields = {}
     top_level_fields["start_date"] = form_data['time_period']['start']
@@ -69,17 +70,26 @@ def process_form(form_data: dict) -> None:
 
     sql = f"INSERT into form_data ({column_str}) VALUES ({question_marks})"
 
-    db = get_db()
-    db.execute(sql, ([top_level_fields[key] for key in fields]))
-    db.commit()
-        
-def process_question(form_data: dict, question: str) -> None:
-    
-    if question == "time_period":
+    try:
+        db = get_db()
+        db.execute(sql, ([top_level_fields[key] for key in fields]))
+        db.commit()
         return None
+    except Exception as e:
+        error = str(e.__class__) + " : " + repr(e)
+        return error
+        
+
+def process_question(form_data: dict, question: str) -> tuple:
+    """
+
+    """
+
+    #if question == "time_period":
+     #   return None
     if not isinstance(form_data[question], dict):
         return None
-
+    
     keys = form_data[question].keys()
     question_marks = ", ".join("?" * len(keys))
     keys_str = ", ".join([str(elem) for elem in form_data[question].keys()])
@@ -90,8 +100,10 @@ def process_question(form_data: dict, question: str) -> None:
         db = get_db()
         db.execute(sql, ([form_data[question][key] for key in keys]))
         db.commit()
+        return None
     except OperationalError as e:
-        print(e.args)
+        error = str(e.__class__) + " : " + repr(e)
+        return error
 
 
 def init_db():
