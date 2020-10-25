@@ -52,7 +52,7 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
-def process_form(form_data: dict):
+def process_form(form_data: dict) -> None:
     
     top_level_fields = {}
     top_level_fields["start_date"] = form_data['time_period']['start']
@@ -74,7 +74,9 @@ def process_form(form_data: dict):
     db.commit()
         
 def process_question(form_data: dict, question: str) -> None:
-
+    
+    if question == "time_period":
+        return None
     if not isinstance(form_data[question], dict):
         return None
 

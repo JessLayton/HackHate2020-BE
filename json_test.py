@@ -7,8 +7,8 @@ with open("example.json") as f:
     form_data = json.load(f)
 
 ## Test POST API JSON
-import requests
-requests.post('http://localhost:5000/api/form', json=form_data)
+#import requests
+#requests.post('http://localhost:5000/api/form', json=form_data)
 
 def get_db2():
     db_file = "instance/dataColl.sqlite"
@@ -51,6 +51,9 @@ process_form(form_data)
 
 
 def process_question(form_data: dict, question: str) -> None:
+
+    if question == "time_period":
+        return None
 
     if not isinstance(form_data[question], dict):
         return None

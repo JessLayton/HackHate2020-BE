@@ -23,6 +23,18 @@ flask run
 
 ## Testing
 The project used pyest as as it's testing framework. Github actions is configured to run these automatically. To run manually:
-```
+```bash
 python3 -m pytest tests/
+```
+
+## Try POST endpoint
+```python
+import json
+with open("example.json") as f:
+    form_data = json.load(f)
+
+## Test POST API JSON
+import requests
+requests.post('http://localhost:5000/api/form', json=form_data)
+
 ```
