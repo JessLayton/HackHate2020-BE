@@ -72,6 +72,7 @@ def addDDPO():
 
         # Do the insert
         query_db("INSERT INTO Organisation (Name) VAlUES (?);", (json["name"],))
+        get_db().commit()
 
         # Get the data back out for returning
         query = "SELECT Id, Name FROM Organisation WHERE Name = ?"
@@ -174,6 +175,7 @@ def updateDDPO():
 
         # Do the update - does nothing if DDPO does not exist
         query_db("UPDATE Organisation SET Name = ? WHERE Id = ?", (json["name"], json["id"]))
+        get_db().commit()
 
         # Get the data back out for returning
         query = "SELECT Id, Name FROM Organisation WHERE Id = ?"
@@ -242,6 +244,7 @@ def deleteDDPO():
 
         # Do the delete - does nothing if DDPO does not exist
         query_db("DELETE FROM Organisation WHERE Id = ?", (json["id"],))
+        get_db().commit()
 
         return jsonify({
             "status": "success",
