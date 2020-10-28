@@ -1,0 +1,82 @@
+{
+    "time_period": {
+        "start": "2020-01-15", 
+        "end": "2020-04-27"
+    },
+    "name_ddpo": "foobar",
+    "borough_covered": ["Barnet", "Harrow"],
+    "enquires": {
+        "dhc": 45,
+        "police": 34,
+        "not_police": 3,
+        "self_referrals": 56,
+        "police_referrals": 46
+    },
+    "ddpo_short_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "support_provided": {
+        "hate_crime": 46,
+        "emotional": 457,
+        "general": 354,
+        "other": 333
+    },
+    "cases_not_police_report": {
+        "lack_evidence": 374,
+        "cd_not_trust_police": 354,
+        "cd_police_not_believe": 3656,
+        "cd_afraid": 9347,
+        "cd_abuse_stop": 4672,
+        "cd_talk": 620,
+        "other": 739
+    },
+    "support_age": {
+        "under_17": 5438,
+        "eighteen_to_65": 1452,
+        "sixtyfive_plus": 14760
+    },
+    "ethnicity": {
+        "white_eng_plus": 13247,
+        "white_irish": 4573,
+        "white_traveller": 4273,
+        "white_other": 9371,
+        "mixed_caribbean": 713,
+        "mixed_african": 934,
+        "mixed_asian": 348,
+        "mixed_multiple": 182,
+        "asian_indian": 490,
+        "asian_pakistani": 4732,
+        "asian_bang": 1790,
+        "asian_chinese": 6789,
+        "asian_other": 355,
+        "black_african": 9274,
+        "black_caribbean": 1367,
+        "black_other": 353,
+        "other_arab": 654,
+        "other": 626
+    },
+    "gender": {
+        "cis_male": 253,
+        "cis_female": 243,
+        "male": 2425,
+        "female": 2125,
+        "hetro": 674,
+        "homo": 2567,
+        "bi": 8765,
+        "lesbian": 369,
+        "other": 249
+    },
+    "cases_related_to": {
+        "covid": 2492,
+        "neighbour": 369,
+        "friend_carer": 4759,
+        "home": 356,
+        "domestic_violence": 455,
+        "care_home": 535,
+        "verbal": 369,
+        "physical": 829,
+        "street": 446,
+        "public_transport": 3536,
+        "other": 2422
+    },
+    "casestudy_highlighting_emotional_impact": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+    "casestudy_highlighting_positive_outcome": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
+}
