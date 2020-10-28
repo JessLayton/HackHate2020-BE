@@ -15,6 +15,8 @@ def test_getDDPOs_success(client):
         {'id': 3, 'name': 'Baz DDPO'}
     ]
 
+def test_form(client):
+    pass
 
 def test_getDDPOs_error(client, app):
     """Test getDDPOs endpoint error handling."""
