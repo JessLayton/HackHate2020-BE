@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from datetime import datetime
 
 
@@ -23,10 +24,12 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-    
+
     from . import db
     db.init_app(app)
 
     from . import api
+    # Enable CORS on the blueprint before registration
+    CORS(api.bp)
     app.register_blueprint(api.bp)
     return app

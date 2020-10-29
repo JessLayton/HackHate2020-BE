@@ -47,6 +47,17 @@ def test_addDDPO_success(client):
         "name": "Bing DDPO"
     }
 
+    # Check the addition worked
+    response = client.get('/api/getDDPOs')
+    json = response.get_json()
+    assert json['status'] == 'success'
+    assert json['data'] == [
+        {'id': 1, 'name': 'Foo DDPO'},
+        {'id': 2, 'name': 'Bar DDPO'},
+        {'id': 3, 'name': 'Baz DDPO'},
+        {'id': 4, 'name': 'Bing DDPO'}
+    ]
+
 
 def test_addDDPO_fail_wrong_name_type(client):
     """Test passing non-strings as name attributes to addDDPO."""
@@ -105,6 +116,15 @@ def test_updateDDPO_success(client):
         "name": "Bish DDPO"
     }
 
+    # Check the update worked
+    response = client.get('/api/getDDPOs')
+    json = response.get_json()
+    assert json['status'] == 'success'
+    assert json['data'] == [
+        {'id': 1, 'name': 'Foo DDPO'},
+        {'id': 2, 'name': 'Bish DDPO'},
+        {'id': 3, 'name': 'Baz DDPO'},
+    ]
 
 def test_updateDDPO_fail_wrong_id_type(client):
     """Test passing non-integers as id attributes to updateDDPO."""
@@ -240,6 +260,15 @@ def test_deleteDDPO_success(client):
     json = response.get_json()
     assert json['status'] == 'success'
     assert json["data"] is None
+
+    # Check the delete worked
+    response = client.get('/api/getDDPOs')
+    json = response.get_json()
+    assert json['status'] == 'success'
+    assert json['data'] == [
+        {'id': 2, 'name': 'Bar DDPO'},
+        {'id': 3, 'name': 'Baz DDPO'},
+    ]
 
 
 def test_deleteDDPO_fail_wrong_id_type(client):
