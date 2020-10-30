@@ -66,7 +66,19 @@
     "referrals": {
         "from_authorities": 3,
         "self": 6
-    }
+    },
+    "impairments": {
+        "cognitive": 0,
+        "deaf": 0,
+        "hoh": 0,
+        "learning_difficulties": 0,
+        "long_term": 0,
+        "mental_health": 0,
+        "neurodiverse": 0,
+        "other": 0,
+        "physical": 0,
+        "sensory": 0
+    },
     "cases_related_to": {
         "covid": 2492,
         "neighbour": 369,
