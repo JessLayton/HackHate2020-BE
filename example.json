@@ -1,18 +1,12 @@
 {
-    "time_period": {
-        "start": "2020-01-15", 
-        "end": "2020-04-27"
-    },
+    "year": 2021,
+    "quarter": 1,
     "name_ddpo": "foobar",
     "borough_covered": ["Barnet", "Harrow"],
-    "enquires": {
-        "dhc": 45,
-        "police": 34,
-        "not_police": 3,
-        "self_referrals": 56,
-        "police_referrals": 46
-    },
     "ddpo_short_paragraph": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "hate_crime_cases": 4,
+    "cases_reported": 5,
+    "cases_not_reported": 5,
     "support_provided": {
         "hate_crime": 46,
         "emotional": 457,
@@ -21,11 +15,11 @@
     },
     "cases_not_police_report": {
         "lack_evidence": 374,
-        "cd_not_trust_police": 354,
-        "cd_police_not_believe": 3656,
-        "cd_afraid": 9347,
-        "cd_abuse_stop": 4672,
-        "cd_talk": 620,
+        "not_trust_police": 354,
+        "police_not_believe": 3656,
+        "afraid": 9347,
+        "abuse_stop": 4672,
+        "talk": 620,
         "other": 739
     },
     "support_age": {
@@ -54,15 +48,36 @@
         "other": 626
     },
     "gender": {
-        "cis_male": 253,
-        "cis_female": 243,
-        "male": 2425,
-        "female": 2125,
-        "hetro": 674,
-        "homo": 2567,
-        "bi": 8765,
-        "lesbian": 369,
-        "other": 249
+        "same": 253,
+        "different": 243,
+        "not_say": 2425,
+    },
+    "sex": {
+        "male": 45,
+        "female": 30,
+        "other": 22
+    },
+    "orientation": {
+        "heterosexual": 34,
+        "homosexual": 2,
+        "bisexual": 3,
+        "other": 3
+    },
+    "referrals": {
+        "from_authorities": 3,
+        "self": 6
+    },
+    "impairments": {
+        "cognitive": 0,
+        "deaf": 0,
+        "hoh": 0,
+        "learning_difficulties": 0,
+        "long_term": 0,
+        "mental_health": 0,
+        "neurodiverse": 0,
+        "other": 0,
+        "physical": 0,
+        "sensory": 0
     },
     "cases_related_to": {
         "covid": 2492,
@@ -77,6 +92,6 @@
         "public_transport": 3536,
         "other": 2422
     },
-    "casestudy_highlighting_emotional_impact": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-    "casestudy_highlighting_positive_outcome": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
+    "casestudy_impact": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+    "casestudy_outcome": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga."
 }

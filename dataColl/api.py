@@ -1,7 +1,7 @@
 """api.py - Define API endpoints"""
 import sqlite3
 from flask import Blueprint, jsonify, request
-from dataColl.db import query_db, get_db, process_form, process_question
+from dataColl.db import query_db, get_db, process_form
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -83,35 +83,26 @@ def addDDPO():
         })
     except sqlite3.Error as e:
         return jsonify({"status": "error", "message": e.args[0]})
- 
+
 
 @bp.route('form', methods=['POST'])
 def form():
+    '''
+    Store form response data.
+    '''
     form_data = request.get_json(force=True)
+    try:
+        process_form(form_data)
+    except sqlite3.Error as e:
+        return jsonify({"status": "error", "message": e.args[0]})
+    except KeyError as e:
+        return jsonify({"status": "fail", "data": "form data missing key(s)"})
+    except ValueError as e:
+        if e.args[0] == 'Organisation does not exist':
+            return jsonify({"status": "fail", "data": e.args[0]})
 
-    errors = {}
+    return jsonify({"status": "success", "data": form_data})
 
-    form_error = process_form(form_data)
-    errors["form_error"] = form_error
-
-    for question in form_data.keys():
-        error_response = process_question(form_data=form_data, question=question)
-        errors[question] = error_response
-
-    error_bool = []
-    for key in errors.keys():
-        error_bool.append(errors[key] is None)
-
-    if sum(error_bool) == len(error_bool):
-        status = "success"
-        message = "The recieved json was successfully stored"
-    else:
-        status = "error"
-        message = f"Their was {len(error_bool) - sum(error_bool)} errors in storing the data. See data to find out more"
-
-    api_response =  {"status": status, "message": message, "data": errors}
-    return jsonify(api_response)
-  
 
 @bp.route('/updateDDPO', methods=['PUT'])
 def updateDDPO():
