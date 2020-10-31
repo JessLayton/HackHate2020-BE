@@ -11,6 +11,20 @@ DROP TABLE IF EXISTS Sex;
 DROP TABLE IF EXISTS CaseRelatedCategory;
 DROP TABLE IF EXISTS Borough;
 DROP TABLE IF EXISTS Organisation;
+DROP TABLE IF EXISTS Impairment;
+Drop TABLE IF EXISTS ResponseBorough;
+DROP TABLE IF EXISTS EthnicityTotal;
+DROP TABLE IF EXISTS NoReportReasonTotal;
+DROP TABLE IF EXISTS GenderTotal;
+DROP TABLE IF EXISTS ReferralTypeTotal;
+DROP TABLE IF EXISTS SupportTypeTotal;
+DROP TABLE IF EXISTS SupportAgeCategoryTotal;
+DROP TABLE IF EXISTS SexualOrientationTotal;
+DROP TABLE IF EXISTS SexTotal;
+DROP TABLE IF EXISTS CaseRelatedCategoryTotal;
+DROP TABLE IF EXISTS BoroughTotal;
+DROP TABLE IF EXISTS OrganisationTotal;
+DROP TABLE IF EXISTS ImpairmentTotal;
 
 -- Create tables
 CREATE TABLE Organisation (
@@ -18,19 +32,18 @@ CREATE TABLE Organisation (
     Id INTEGER PRIMARY KEY,
     Name TEXT NOT NULL
 );
-
-CREATE TABLE Response(
+CREATE TABLE Response (
     Id INTEGER PRIMARY KEY, 
     Year INTEGER NOT NULL,
     Quarter INTEGER NOT NULL,
-    FOREIGN KEY (OrganisationId) REFERENCES Organisation(Id) NOT NULL,
+    OrganisationId INTEGER NOT NULL,
     CasesReferredToPolice INTEGER,
     CasesNotReferredToPolice INTEGER,
     HateCrimeReferrals INTEGER,
     FreeTextResponse TEXT,
     CaseStudyEmotionalImpact TEXT,
-    CaseStudyPositiveOutcome TEXT
-    
+    CaseStudyPositiveOutcome TEXT,
+    FOREIGN KEY (OrganisationId) REFERENCES Organisation(Id)   
 );
                                            
 CREATE TABLE Ethnicity(
@@ -99,78 +112,98 @@ CREATE TABLE Impairment (
 );
                                                                                         --dynamic tables
 CREATE TABLE EthnicityTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (EthnicityId) REFERENCES Ethnicity(Id),
+    EthnicityId INTEGER,
+    ResponseId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, EthnicityId)
+    PRIMARY KEY (ResponseId, EthnicityId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (EthnicityId) REFERENCES Ethnicity(Id)
 );
 
 CREATE TABLE NoReportReasonTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (NoReportReasonId) REFERENCES NoReportReason(Id),
+    ResponseId INTEGER,
+    NoReportReasonId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, NoReportReasonId)
+    PRIMARY KEY (ResponseId, NoReportReasonId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (NoReportReasonId) REFERENCES NoReportReason(Id)
 );
 
-CREATE TABLE GenderTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (GenderId) REFERENCES Gender(Id),
+CREATE TABLE GenderTotal (
+    ResponseId INTEGER,
+    GenderId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, GenderId)
-
+    PRIMARY KEY (ResponseId, GenderId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (GenderId) REFERENCES Gender(Id)
 );
 
 CREATE TABLE ReferralTypeTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (ReferralTypeId) REFERENCES ReferralType(Id),
+    ResponseId INTEGER,
+    ReferralTypeId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, ReferralTypeId)
+    PRIMARY KEY (ResponseId, ReferralTypeId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (ReferralTypeId) REFERENCES ReferralType(Id)
 );
 
 CREATE TABLE SupportTypeTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (SupportTypeId) REFERENCES SupportType(Id),
+    ResponseId INTEGER,
+    SupportTypeId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, SupportTypeId)
+    PRIMARY KEY (ResponseId, SupportTypeId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (SupportTypeId) REFERENCES SupportType(Id)
 );
 
 CREATE TABLE SupportAgeCategoryTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (SupportAgeCategoryId) REFERENCES SupportAgeCategory(Id),
+    ResponseId INTEGER,
+    SupportAgeCategoryId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, SupportAgeCategoryId)
+    PRIMARY KEY (ResponseId, SupportAgeCategoryId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (SupportAgeCategoryId) REFERENCES SupportAgeCategory(Id)
 );
 
 CREATE TABLE SexualOrientationTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (SexualOrientationId) REFERENCES SexualOrientation(Id),
+    ResponseId INTEGER,
+    SexualOrientationId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, SexualOrientationId)
+    PRIMARY KEY (ResponseId, SexualOrientationId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (SexualOrientationId) REFERENCES SexualOrientation(Id)
 );
 
 CREATE TABLE SexTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (SexId) REFERENCES Sex(Id),
+    ResponseId INTEGER,
+    SexId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, SexId)
+    PRIMARY KEY (ResponseId, SexId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (SexId) REFERENCES Sex(Id)
 );
 
 CREATE TABLE ImpairmentTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (ImpairmentId) REFERENCES Impairment(Id),
+    ResponseId INTEGER,
+    ImpairmentId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, ImpairmentId)
+    PRIMARY KEY (ResponseId, ImpairmentId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (ImpairmentId) REFERENCES Impairment(Id)
 );
 
 CREATE TABLE CaseRelatedCategoryTotal(
-    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
-    FOREIGN KEY (CaseRelatedCategoryId) REFERENCES CaseRelatedCategory(Id),
+    ResponseId INTEGER,
+    CaseRelatedCategoryId INTEGER,
     Total INTEGER,
-    PRIMARY KEY (ResponseId, CaseRelatedCategoryId)
-
+    PRIMARY KEY (ResponseId, CaseRelatedCategoryId),
+    FOREIGN KEY (ResponseId) REFERENCES Response(Id),
+    FOREIGN KEY (CaseRelatedCategoryId) REFERENCES CaseRelatedCategory(Id)
 );
 
 CREATE TABLE ResponseBorough(
+    ResponseId INTEGER,
+    BoroughId INTEGER,
     FOREIGN KEY (ResponseId) REFERENCES Response(Id),
     FOREIGN KEY (BoroughId) REFERENCES Borough(Id)
     PRIMARY KEY (ResponseId, BoroughId)
@@ -248,7 +281,7 @@ VALUES  ('Hate Crime support - support to report / criminal justice system', 'ha
 INSERT INTO SupportAgeCategory (Description, JSONKey)
 VALUES  ('Under 17', 'under_17'),
         ('18 - 65', 'eighteen_to_65'),
-        )'Over 65', 'sixtyfive_plus');
+        ('Over 65', 'sixtyfive_plus');
 
 INSERT INTO Gender (Description, JSONKey)
 VALUES  ('Same as assigned at birth', 'same'),
@@ -260,7 +293,7 @@ VALUES  ('Male', 'male'),
         ('Female', 'female'),
         ('Other', 'other');
 
-INSERT INTO Orientation (Description, JSONKey)
+INSERT INTO SexualOrientation (Description, JSONKey)
 VALUES  ('Heterosexual', 'heterosexual'),
         ('Homosexual', 'homosexual'),
         ('Bisexual', 'bisexual'),
@@ -273,7 +306,7 @@ VALUES  ('Self-referral', 'self'),
 INSERT INTO Impairment (Description, JSONKey)
 VALUES  ('Cognitive', 'cognitive'),
         ('Deaf', 'deaf'),
-        ('Deafened/hard of hearing'),
+        ('Deafened/hard of hearing', 'hoh'),
         ('Learning difficulties', 'learning_difficulties'),
         ('Long-term condition(s)', 'long_term'),
         ('Mental health issues', 'mental_health'),
@@ -282,15 +315,15 @@ VALUES  ('Cognitive', 'cognitive'),
         ('Sensory', 'sensory'),
         ('Other', 'other');
 
-INSERT INTO CaseRelatedCategory (Description, JSONKey) (
-    ('COVID-19/Face masks', 'covid'),
-    ('Neighbour dispute', 'neighbour'),
-    ('Friend/Carer', 'friend_carer'),
-    ('In the home', 'home'),
-    ('Domestic Violence', 'domestic_violence'),
-    ('Residential/Care home', 'care_home'),
-    ('Verbal abuse', 'verbal'),
-    ('Physical abuse', 'physical'),
-    ('In the street', 'street'),
-    ('Public transport', 'public_transport'),
-    ('Other', 'other');
+INSERT INTO CaseRelatedCategory (Description, JSONKey)
+VALUES  ('COVID-19/Face masks', 'covid'),
+        ('Neighbour dispute', 'neighbour'),
+        ('Friend/Carer', 'friend_carer'),
+        ('In the home', 'home'),
+        ('Domestic Violence', 'domestic_violence'),
+        ('Residential/Care home', 'care_home'),
+        ('Verbal abuse', 'verbal'),
+        ('Physical abuse', 'physical'),
+        ('In the street', 'street'),
+        ('Public transport', 'public_transport'),
+        ('Other', 'other');
