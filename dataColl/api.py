@@ -255,7 +255,8 @@ def getResponses():
 
     json = []
     response_query = '''
-    SELECT  r.Year,
+    SELECT  r.Id,
+            r.Year,
             r.Quarter,
             o.Name AS Organisation,
             r.CasesReferredToPolice,
@@ -268,20 +269,10 @@ def getResponses():
     JOIN Organisation o
         ON r.OrganisationId = o.Id;
     '''
-    org_query = 'SELECT Name FROM Organisation WHERE Id = ?'
 
     responses = query_db(response_query)
     for r in responses:
-        response_json = {}
-        response_json['Organisation'] = query_db(org_query, args=(r['OrganisationId'],))['Name']
-        response_json['Year'] = r['Year']
-        response_json['Quarter'] = r['Quarter']
-        response_json['CasesReferredToPolice'] = r['CasesReferredToPolice']
-        response_json['CasesNotReferredToPolice'] = r['CasesNotReferredToPolice']
-        response_json['HateCrimeReferrals'] = r['HateCrimeReferrals']
-        response_json['FreeTextResponse'] = r['FreeTextResponse']
-        response_json['CaseStudyEmotionalImpact'] = r['CaseStudyEmotionalImpact']
-        response_json['CaseStudyPositiveOutcome'] = r['CaseStudyPositiveOutcome']
+        response_json = dict(r)
 
         for category in CATEGORIES:
             total_query = f'''
