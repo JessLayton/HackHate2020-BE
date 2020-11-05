@@ -243,3 +243,55 @@ def deleteDDPO():
         })
     except sqlite3.Error as e:
         return jsonify({"status": "error", "message": e.args[0]})
+
+
+@bp.route('/getResponses', methods=['GET'])
+def getResponses():
+    '''Get all responses as a JSON list'''
+    CATEGORIES = (
+        'Ethnicity', 'NoReportReason', 'ReferralType', 'SupportType', 'SupportAgeCategory',
+        'Sex', 'Gender', 'SexualOrientation', 'CaseRelatedCategory', 'Impairment'
+    )
+
+    json = []
+    response_query = '''
+    SELECT  r.Year,
+            r.Quarter,
+            o.Name AS Organisation,
+            r.CasesReferredToPolice,
+            r.CasesNotReferredToPolice,
+            r.HateCrimeReferrals,
+            r.FreeTextResponse,
+            r.CaseStudyEmotionalImpact,
+            r.CaseStudyPositiveOutcome
+    FROM Response r
+    JOIN Organisation o
+        ON r.OrganisationId = o.Id;
+    '''
+    org_query = 'SELECT Name FROM Organisation WHERE Id = ?'
+
+    responses = query_db(response_query)
+    for r in responses:
+        response_json = {}
+        response_json['Organisation'] = query_db(org_query, args=(r['OrganisationId'],))['Name']
+        response_json['Year'] = r['Year']
+        response_json['Quarter'] = r['Quarter']
+        response_json['CasesReferredToPolice'] = r['CasesReferredToPolice']
+        response_json['CasesNotReferredToPolice'] = r['CasesNotReferredToPolice']
+        response_json['HateCrimeReferrals'] = r['HateCrimeReferrals']
+        response_json['FreeTextResponse'] = r['FreeTextResponse']
+        response_json['CaseStudyEmotionalImpact'] = r['CaseStudyEmotionalImpact']
+        response_json['CaseStudyPositiveOutcome'] = r['CaseStudyPositiveOutcome']
+
+        for category in CATEGORIES:
+            total_query = f'''
+            SELECT t2.Description, t1.Total
+            FROM {category}Total t1
+            JOIN {category} t2
+                ON t1.{category}Id = t2.Id
+            WHERE t1.ResponseId = ?;
+            '''
+            totals = query_db(total_query, args=(r['Id'],))
+            response_json[category] = {t['Description']: t['Total'] for t in totals}
+        json.append(response_json)
+    return jsonify(json)
