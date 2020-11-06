@@ -247,7 +247,9 @@ def deleteDDPO():
 
 @bp.route('/getResponses', methods=['GET'])
 def getResponses():
-    '''Get all responses as a JSON list'''
+    '''Get all responses as a JSON list. Expects a list of top-level attributes to include'''
+    include = request.get_json()
+
     CATEGORIES = (
         'Ethnicity', 'NoReportReason', 'ReferralType', 'SupportType', 'SupportAgeCategory',
         'Sex', 'Gender', 'SexualOrientation', 'CaseRelatedCategory', 'Impairment'
@@ -272,9 +274,11 @@ def getResponses():
 
     responses = query_db(response_query)
     for r in responses:
-        response_json = dict(r)
+        response_json = {k: v for k, v in r.items() if k in include}
 
         for category in CATEGORIES:
+            if category not in include:
+                continue
             total_query = f'''
             SELECT t2.Description, t1.Total
             FROM {category}Total t1
