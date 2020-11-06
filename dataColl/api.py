@@ -274,7 +274,7 @@ def getResponses():
 
     responses = query_db(response_query)
     for r in responses:
-        response_json = {k: v for k, v in r.items() if k in include}
+        response_json = {k: r[k] for k in r.keys() if k in include}
 
         for category in CATEGORIES:
             if category not in include:
